@@ -5,6 +5,7 @@ import 'package:last_penny/constants/last_penny_static.dart';
 import 'package:last_penny/constants/last_penny_theme.dart';
 import 'package:last_penny/main.dart';
 
+
 class SettingsScreen extends StatefulWidget {
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
@@ -49,7 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         margin: EdgeInsets.only(right: 16),
                         child: Row(
                           children: <Widget>[
-                            Text('Version: 1.0.0', style: GoogleFonts.inter(
+                            Text('Version: ' + LastPennyVersion, style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.italic,

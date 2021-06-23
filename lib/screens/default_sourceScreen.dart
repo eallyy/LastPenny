@@ -54,6 +54,7 @@ class _DefaultSourceScreenState extends State<DefaultSourceScreen> {
                       onTap: (){
                         setState(() {
                           defaultSource = "CoinMarketCap";
+                          SQLiteHelper.setDefaultSource('CoinMarketCap');
                         });
                       },
                       child: Container(
@@ -96,6 +97,7 @@ class _DefaultSourceScreenState extends State<DefaultSourceScreen> {
                       onTap: (){
                         setState(() {
                           defaultSource = "Investing";
+                          SQLiteHelper.setDefaultSource('Investing');
                         });
                       },
                       child: Container(
@@ -138,6 +140,7 @@ class _DefaultSourceScreenState extends State<DefaultSourceScreen> {
                       onTap: (){
                         setState(() {
                           defaultSource = "TradingView";
+                          SQLiteHelper.setDefaultSource('TradingView');
                         });
                       },
                       child: Container(

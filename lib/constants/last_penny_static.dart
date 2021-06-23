@@ -39,7 +39,7 @@ class LastPennyRouteGenerator {
       // In-Page Routes
       case '/currency':
         return MaterialPageRoute(builder: (_) => CurrencyScreen(
-          currency: args,
+          currency_code: args,
         ));
       case '/account':
         return MaterialPageRoute(builder: (_) => AccountScreen());

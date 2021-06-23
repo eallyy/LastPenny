@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:marquee/marquee.dart';
 import 'package:last_penny/constants/last_penny_static.dart';
 import 'package:last_penny/main.dart';
+import 'package:last_penny/models/firestore.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -19,6 +20,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool marketDatasPopUp = false;
   final ScrollController scrollController = ScrollController();
+  final FirestoreHelper fshelper = FirestoreHelper();
+
+  @override
+  void initState() {
+    fshelper.getMarketDatas();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           blankSpace: 20,
                           velocity: 10,
-                          text: 'Market Cap:  \$'+marketDatas.market_cap+'    •    24h Vol:  \$'+marketDatas.vol_24h+'    •    Cryptocurrencies:  '+marketDatas.cryptocurrencies+'    •    Market Pairs:  '+marketDatas.market_pairs+'    •',
+                          text: 'Market Cap:  \$'+marketCap+'    •    24h Vol:  \$'+vol24h+'    •    Cryptocurrencies:  '+cryptocurrencies+'    •    Market Pairs:  '+marketPairs+'    •',
                           style: GoogleFonts.inter(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -131,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     fontWeight: FontWeight.w600,
                                                     color: pennyWhite4
                                                 ),),
-                                                Text(' ('+marketDatas.dominance_btc.toString()+'%)', style: GoogleFonts.inter(
+                                                Text(' ('+dominanceBTC.toString()+'%)', style: GoogleFonts.inter(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,
                                                     color: pennyWhite4
@@ -161,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     fontWeight: FontWeight.w600,
                                                     color: pennyWhite4
                                                 ),),
-                                                Text(' ('+marketDatas.dominance_eth.toString()+'%)', style: GoogleFonts.inter(
+                                                Text(' ('+dominanceETH.toString()+'%)', style: GoogleFonts.inter(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,
                                                     color: pennyWhite4
@@ -190,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     fontWeight: FontWeight.w600,
                                                     color: pennyWhite4
                                                 ),),
-                                                Text(' ('+marketDatas.dominance_other.toString()+'%)', style: GoogleFonts.inter(
+                                                Text(' ('+dominanceOther.toString()+'%)', style: GoogleFonts.inter(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,
                                                     color: pennyWhite4
@@ -240,17 +247,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       sectionsSpace: 4,
                                                       sections: [
                                                         PieChartSectionData(
-                                                          value: marketDatas.dominance_btc,
+                                                          value: double.parse(dominanceBTC),
                                                           color: pennyBTC,
                                                           showTitle: false,
                                                         ),
                                                         PieChartSectionData(
-                                                            value: marketDatas.dominance_eth,
+                                                            value: double.parse(dominanceETH),
                                                             color: pennyETH,
                                                             showTitle: false
                                                         ),
                                                         PieChartSectionData(
-                                                            value: marketDatas.dominance_other,
+                                                            value: double.parse(dominanceOther),
                                                             color: pennyBlack10,
                                                             showTitle: false
                                                         )
@@ -347,7 +354,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: (){
-                            Navigator.of(context).pushNamed('/currency', arguments: top10Coins[index].symbol);
+                            // Fetching cryptocurrency datas
+                            fshelper.getCurrencyDatas(top10Coins[index].currency_code);
+                            Navigator.of(context).pushNamed('/currency', arguments: top10Coins[index].currency_code);
                           },
                           child: Container(
                               height: 100,
@@ -552,7 +561,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             fontWeight: FontWeight.w600,
                                                             color: pennyWhite4
                                                         ),),
-                                                        Text(' ('+marketDatas.dominance_btc.toString()+'%)', style: GoogleFonts.inter(
+                                                        Text(' ('+dominanceBTC.toString()+'%)', style: GoogleFonts.inter(
                                                             fontSize: 14,
                                                             fontWeight: FontWeight.w500,
                                                             color: pennyWhite4
@@ -582,7 +591,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             fontWeight: FontWeight.w600,
                                                             color: pennyWhite4
                                                         ),),
-                                                        Text(' ('+marketDatas.dominance_eth.toString()+'%)', style: GoogleFonts.inter(
+                                                        Text(' ('+dominanceETH.toString()+'%)', style: GoogleFonts.inter(
                                                             fontSize: 14,
                                                             fontWeight: FontWeight.w500,
                                                             color: pennyWhite4
@@ -611,7 +620,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             fontWeight: FontWeight.w600,
                                                             color: pennyWhite4
                                                         ),),
-                                                        Text(' ('+marketDatas.dominance_other.toString()+'%)', style: GoogleFonts.inter(
+                                                        Text(' ('+dominanceOther.toString()+'%)', style: GoogleFonts.inter(
                                                             fontSize: 14,
                                                             fontWeight: FontWeight.w500,
                                                             color: pennyWhite4
@@ -661,17 +670,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               sectionsSpace: 4,
                                                               sections: [
                                                                 PieChartSectionData(
-                                                                  value: marketDatas.dominance_btc,
+                                                                  value: double.parse(dominanceBTC),
                                                                   color: pennyBTC,
                                                                   showTitle: false,
                                                                 ),
                                                                 PieChartSectionData(
-                                                                    value: marketDatas.dominance_eth,
+                                                                    value: double.parse(dominanceETH),
                                                                     color: pennyETH,
                                                                     showTitle: false
                                                                 ),
                                                                 PieChartSectionData(
-                                                                    value: marketDatas.dominance_other,
+                                                                    value: double.parse(dominanceOther),
                                                                     color: pennyBlack10,
                                                                     showTitle: false
                                                                 )
@@ -747,7 +756,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   SizedBox(
                                                     height: 4,
                                                   ),
-                                                  Text('\$'+marketDatas.market_cap, style: GoogleFonts.inter(
+                                                  Text('\$'+marketCap, style: GoogleFonts.inter(
                                                       fontSize: 12,
                                                       fontWeight: FontWeight.w500,
                                                       color: pennyWhite3
@@ -771,7 +780,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       SizedBox(
                                                         height: 4,
                                                       ),
-                                                      Text(marketDatas.cryptocurrencies, style: GoogleFonts.inter(
+                                                      Text(cryptocurrencies, style: GoogleFonts.inter(
                                                           fontSize: 12,
                                                           fontWeight: FontWeight.w500,
                                                           color: pennyWhite3
@@ -792,7 +801,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   SizedBox(
                                                     height: 4,
                                                   ),
-                                                  Text('\$'+marketDatas.vol_24h, style: GoogleFonts.inter(
+                                                  Text('\$'+vol24h, style: GoogleFonts.inter(
                                                       fontSize: 12,
                                                       fontWeight: FontWeight.w500,
                                                       color: pennyWhite3
@@ -816,7 +825,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       SizedBox(
                                                         height: 4,
                                                       ),
-                                                      Text(marketDatas.market_pairs, style: GoogleFonts.inter(
+                                                      Text(marketPairs, style: GoogleFonts.inter(
                                                           fontSize: 12,
                                                           fontWeight: FontWeight.w500,
                                                           color: pennyWhite3

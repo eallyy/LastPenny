@@ -5,23 +5,37 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:last_penny/constants/last_penny_static.dart';
 import 'package:last_penny/constants/last_penny_theme.dart';
 import 'package:last_penny/main.dart';
-import 'package:last_penny/models/offlineDatas.dart';
+import 'package:last_penny/models/firestore.dart';
+
+String ranking;
+String currency;
+String symbol;
+String price_usd;
+String market_cap_usd;
+String market_cap_growth_way;
+String market_cap_growth_rate;
+String fully_diluted_market_cap_usd;
+String fully_diluted_market_cap_growth_way;
+String fully_diluted_market_cap_growth_rate;
+String volume_usd;
+String volume_growth_way;
+String volume_growth_rate;
+String max_supply;
+String total_supply;
 
 class CurrencyScreen extends StatefulWidget {
-  final String currency;
+  final String currency_code;
 
-  CurrencyScreen({this.currency});
+  CurrencyScreen({this.currency_code});
 
   @override
   _CurrencyScreenState createState() => _CurrencyScreenState();
 }
 
 class _CurrencyScreenState extends State<CurrencyScreen> {
+  FirestoreHelper fshelper = FirestoreHelper();
   @override
   Widget build(BuildContext context) {
-    // Fetching cryptocurrency datas
-    Cryptocurrency currencyData = getCryptocurrency(widget.currency);
-
     return LastPennyDrawer(
         child: Scaffold(
             body: Container(
@@ -39,7 +53,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                   LastPennyAppBar(),
                   Padding(
                     padding: EdgeInsets.only(top: 25, left: 32, right: 32),
-                    child: Text('Ranking: ' + currencyData.ranking, style: GoogleFonts.inter(
+                    child: Text('Ranking: ' + ranking, style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: darkMode ? pennyWhite3 : pennyBlack2
@@ -54,7 +68,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                           margin: EdgeInsets.only(left:16),
                           child: Row(
                             children: <Widget>[
-                              Text(currencyData.currency, style: GoogleFonts.inter(
+                              Text(currency, style: GoogleFonts.inter(
                                   fontSize: 28,
                                   fontWeight: FontWeight.w900,
                                   color: darkMode ? pennyWhite3 : pennyBlack2
@@ -74,7 +88,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                                 ),
                                 borderRadius: BorderRadius.circular(4)
                             ),
-                            child: Text(currencyData.symbol, style: GoogleFonts.inter(
+                            child: Text(symbol, style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: darkMode ? pennyWhite5 : pennyBlack2
@@ -98,27 +112,27 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('\$'+currencyData.price_usd,
+                        Text('\$'+price_usd,
                           overflow: TextOverflow.fade,
                           maxLines: 1,
                           softWrap: false,
                           style: GoogleFonts.inter(
                               fontSize: 34,
                               fontWeight: FontWeight.w900,
-                              color: currencyData.volume_growth_way == 'up' ? pennyGreen : pennyRed
+                              color: volume_growth_way == 'up' ? pennyGreen : pennyRed
                           ),),
                         Row(
                           children: <Widget>[
                             Container(
                                 padding: EdgeInsets.only(bottom: 3),
-                                child: SvgPicture.asset(currencyData.volume_growth_way == 'up' ? 'lib/assets/svg/arrow_up.svg' : 'lib/assets/svg/arrow_down.svg', height: 20, width: 20, color: currencyData.volume_growth_way == 'up' ? pennyGreen : pennyRed)
+                                child: SvgPicture.asset(volume_growth_way == 'up' ? 'lib/assets/svg/arrow_up.svg' : 'lib/assets/svg/arrow_down.svg', height: 20, width: 20, color: volume_growth_way == 'up' ? pennyGreen : pennyRed)
                             ),
                             Container(
                               margin: EdgeInsets.only(bottom: 3, left: 5),
-                              child: Text(currencyData.volume_growth_rate, style: GoogleFonts.inter(
+                              child: Text(volume_growth_rate, style: GoogleFonts.inter(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w700,
-                                  color: currencyData.volume_growth_way == 'up' ? pennyGreen : pennyRed
+                                  color: volume_growth_way == 'up' ? pennyGreen : pennyRed
                               ),),
                             )
                           ],
@@ -148,21 +162,21 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                         )),
                         Row(
                           children: <Widget>[
-                            Text('\$' + currencyData.market_cap_usd, style: GoogleFonts.inter(
+                            Text('\$' + market_cap_usd, style: GoogleFonts.inter(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: darkMode ? pennyWhite3 : pennyBlack2
                             )),
                             Container(
                                 padding: EdgeInsets.only(bottom: 3, left: 8),
-                                child: SvgPicture.asset(currencyData.market_cap_growth_rate == 'up' ? 'lib/assets/svg/arrow_up.svg' : 'lib/assets/svg/arrow_down.svg', height: 11, width: 11, color: currencyData.market_cap_growth_rate == 'up' ? pennyGreen : pennyRed)
+                                child: SvgPicture.asset(market_cap_growth_rate == 'up' ? 'lib/assets/svg/arrow_up.svg' : 'lib/assets/svg/arrow_down.svg', height: 11, width: 11, color: market_cap_growth_rate == 'up' ? pennyGreen : pennyRed)
                             ),
                             Container(
                               margin: EdgeInsets.only(bottom: 3, left: 4),
-                              child: Text(currencyData.market_cap_growth_rate, style: GoogleFonts.inter(
+                              child: Text(market_cap_growth_rate, style: GoogleFonts.inter(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
-                                  color: currencyData.market_cap_growth_rate == 'up' ? pennyGreen : pennyRed
+                                  color: market_cap_growth_rate == 'up' ? pennyGreen : pennyRed
                               ),),
                             )
                           ],
@@ -192,21 +206,21 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                             ),
                             Row(
                               children: <Widget>[
-                                Text('\$' + currencyData.fully_diluted_market_cap_usd, style: GoogleFonts.inter(
+                                Text('\$' + fully_diluted_market_cap_usd, style: GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: darkMode ? pennyWhite3 : pennyBlack2
                                 )),
                                 Container(
                                     padding: EdgeInsets.only(bottom: 3, left: 8),
-                                    child: SvgPicture.asset(currencyData.market_cap_growth_way == 'up' ? 'lib/assets/svg/arrow_up.svg' : 'lib/assets/svg/arrow_down.svg', height: 11, width: 11, color: currencyData.market_cap_growth_way == 'up' ? pennyGreen : pennyRed)
+                                    child: SvgPicture.asset(market_cap_growth_way == 'up' ? 'lib/assets/svg/arrow_up.svg' : 'lib/assets/svg/arrow_down.svg', height: 11, width: 11, color: market_cap_growth_way == 'up' ? pennyGreen : pennyRed)
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(bottom: 3, left: 4),
-                                  child: Text(currencyData.market_cap_growth_rate, style: GoogleFonts.inter(
+                                  child: Text(market_cap_growth_rate, style: GoogleFonts.inter(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
-                                      color: currencyData.market_cap_growth_way == 'up' ? pennyGreen : pennyRed
+                                      color: market_cap_growth_way == 'up' ? pennyGreen : pennyRed
                                   ),),
                                 )
                               ],
@@ -226,21 +240,21 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                             )),
                             Row(
                               children: <Widget>[
-                                Text('\$' + currencyData.volume_usd, style: GoogleFonts.inter(
+                                Text('\$' + volume_usd, style: GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: darkMode ? pennyWhite3 : pennyBlack2
                                 )),
                                 Container(
                                     padding: EdgeInsets.only(bottom: 3, left: 8),
-                                    child: SvgPicture.asset(currencyData.volume_growth_way == 'up' ? 'lib/assets/svg/arrow_up.svg' : 'lib/assets/svg/arrow_down.svg', height: 11, width: 11, color: currencyData.volume_growth_way == 'up' ? pennyGreen : pennyRed)
+                                    child: SvgPicture.asset(volume_growth_way == 'up' ? 'lib/assets/svg/arrow_up.svg' : 'lib/assets/svg/arrow_down.svg', height: 11, width: 11, color: volume_growth_way == 'up' ? pennyGreen : pennyRed)
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(bottom: 3, left: 4),
-                                  child: Text(currencyData.volume_growth_rate, style: GoogleFonts.inter(
+                                  child: Text(volume_growth_rate, style: GoogleFonts.inter(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
-                                      color: currencyData.volume_growth_way == 'up' ? pennyGreen : pennyRed
+                                      color: volume_growth_way == 'up' ? pennyGreen : pennyRed
                                   ),),
                                 )
                               ],
@@ -268,7 +282,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                                 fontWeight: FontWeight.w500,
                                 color: darkMode ? pennyWhite3 : pennyBlack2
                             )),
-                            Text(currencyData.total_supply, style: GoogleFonts.inter(
+                            Text(total_supply, style: GoogleFonts.inter(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: darkMode ? pennyWhite3 : pennyBlack2
@@ -286,7 +300,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                                 fontWeight: FontWeight.w500,
                                 color: darkMode ? pennyWhite3 : pennyBlack2
                             )),
-                            Text(currencyData.max_supply, style: GoogleFonts.inter(
+                            Text(max_supply, style: GoogleFonts.inter(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: darkMode ? pennyWhite3 : pennyBlack2

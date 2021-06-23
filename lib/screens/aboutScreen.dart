@@ -95,7 +95,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Flexible(
-                                child: Text('Bu uygulama Dr. Öğretim Üyesi Ahmet Cevahir ÇINAR tarafından yürütülen 3301456 kodlu MOBİL PROGRAMLAMA dersi kapsamında 193311046 numaralı İsmail Emir Alanyalıoğlu tarafından 9 Nisan 2021 günü yapılmıştır.',
+                                child: Text('Bu uygulama Dr. Öğretim Üyesi Ahmet Cevahir ÇINAR tarafından yürütülen 3301456 kodlu MOBİL PROGRAMLAMA dersi kapsamında 193311046 numaralı İsmail Emir Alanyalıoğlu tarafından 25 Haziran 2021 günü yapılmıştır.',
                                     overflow: TextOverflow.clip,
                                     style: GoogleFonts.inter(
                                         fontSize: 16,

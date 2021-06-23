@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:last_penny/constants/last_penny_theme.dart';
 import 'package:last_penny/constants/last_penny_static.dart';
 import 'package:last_penny/main.dart';
+import 'package:last_penny/models/firestore.dart';
 import 'package:last_penny/models/offlineDatas.dart';
 
 class Top100Screen extends StatefulWidget {
@@ -12,6 +13,7 @@ class Top100Screen extends StatefulWidget {
 }
 
 class _Top100ScreenState extends State<Top100Screen> {
+  FirestoreHelper fshelper = FirestoreHelper();
   @override
   Widget build(BuildContext context) {
     return LastPennyDrawer(
@@ -58,7 +60,9 @@ class _Top100ScreenState extends State<Top100Screen> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                         onTap: (){
-                          Navigator.of(context).pushNamed('/currency', arguments: top10Coins[index].symbol);
+                          // Fetching cryptocurrency datas
+                          fshelper.getCurrencyDatas(top10Coins[index].currency_code);
+                          Navigator.of(context).pushNamed('/currency', arguments: top10Coins[index].currency_code);
                         },
                         child: Container(
                             height: 100,

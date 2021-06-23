@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "910339293974",
+    "project_id": "last-penny-b7060",
+    "storage_bucket": "last-penny-b7060.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910339293974:android:3f887b914ef4c56a76c637",
+        "android_client_info": {
+          "package_name": "com.last_penny"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "910339293974-q2429v2njjqk3vummc0s6n62jlhdfcd7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBppEq38fo8JBvTYFoejcxCFu9rhdoZvvU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "910339293974-q2429v2njjqk3vummc0s6n62jlhdfcd7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
