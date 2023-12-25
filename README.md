@@ -13,7 +13,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/eallyy/LastPenny">
-    <img src="Assets/Images/seffaf.png" alt="Logo" height="80">
+    <img src="lib/assets/images/icon.png" alt="Logo" height="80">
   </a>
 
 <h3 align="center">Last Penny</h3>
